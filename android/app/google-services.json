@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "676225573875",
+    "project_id": "sc-marketplace-a5719",
+    "storage_bucket": "sc-marketplace-a5719.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676225573875:android:b37162a958494e982a6886",
+        "android_client_info": {
+          "package_name": "com.example.scmarketplace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "676225573875-4ol354ptp7h6k6igi3mlotq63b90u470.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtaNIw2Qxe7hFEbj7zmQhXhbUHI9iL5BM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "676225573875-4ol354ptp7h6k6igi3mlotq63b90u470.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "676225573875-kr9fi36qa1bo9p0p7ms06vql4ii1cpk0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.scmarketplace"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

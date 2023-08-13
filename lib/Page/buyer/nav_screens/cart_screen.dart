@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scmarketplace/Page/buyer/inner_screens/checkout_screen.dart';
-import 'package:scmarketplace/provider/cart_provider.dart';
+
+
+import '../../provider/cart_provider.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});

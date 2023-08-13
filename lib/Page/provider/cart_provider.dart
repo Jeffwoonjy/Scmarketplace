@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import '../Page/buyer/models/cart_attributes.dart';
-
+import '../buyer/models/cart_attributes.dart';
 
 class CartProvider with ChangeNotifier{
   Map<String, CartAttr> _cartItems = {};

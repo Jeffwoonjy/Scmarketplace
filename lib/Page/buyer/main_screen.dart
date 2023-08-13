@@ -1,11 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scmarketplace/Page/allChat.dart';
 import 'package:scmarketplace/Page/buyer/nav_screens/account_screen.dart';
 import 'package:scmarketplace/Page/buyer/nav_screens/cart_screen.dart';
 import 'package:scmarketplace/Page/buyer/nav_screens/category_screen.dart';
 import 'package:scmarketplace/Page/buyer/nav_screens/home_screen.dart';
 import 'package:scmarketplace/Page/buyer/nav_screens/search_screen.dart';
 import 'package:scmarketplace/Page/buyer/nav_screens/store_screen.dart';
+import 'package:scmarketplace/Page/chat.dart';
+import 'package:scmarketplace/Page/profile.dart';
+import 'package:scmarketplace/Page/search.dart';
+import 'package:scmarketplace/Page/viewProfile.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -23,7 +28,8 @@ class _MainScreenState extends State<MainScreen> {
     StoreScreen(),
     CartScreen(),
     SearchScreen(),
-    AccountScreen(),
+    SearchUser(),
+    Profile(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -43,6 +49,7 @@ class _MainScreenState extends State<MainScreen> {
         BottomNavigationBarItem(icon: Icon(Icons.store), label: 'STORE',),
         BottomNavigationBarItem(icon: Icon(CupertinoIcons.shopping_cart), label: 'CART',),
         BottomNavigationBarItem(icon: Icon(CupertinoIcons.search), label: 'SEARCH',),
+        BottomNavigationBarItem(icon: Icon(CupertinoIcons.chat_bubble), label: 'CHAT',),
         BottomNavigationBarItem(icon: Icon(CupertinoIcons.profile_circled), label: 'ACCOUNT',),
       ]),
 

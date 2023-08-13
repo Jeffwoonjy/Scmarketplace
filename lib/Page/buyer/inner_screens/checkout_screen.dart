@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:scmarketplace/Page/buyer/main_screen.dart';
-import 'package:scmarketplace/provider/cart_provider.dart';
+import 'package:scmarketplace/Page/provider/cart_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CheckoutScreen extends StatefulWidget {

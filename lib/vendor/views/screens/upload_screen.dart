@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
-import 'package:scmarketplace/provider/product_provider.dart';
+import 'package:scmarketplace/Page/provider/product_provider.dart';
 import 'package:scmarketplace/vendor/views/screens/main_vendor_screen.dart';
 import 'package:scmarketplace/vendor/views/screens/upload_tap_screen/attributes_tab_screen.dart';
 import 'package:scmarketplace/vendor/views/screens/upload_tap_screen/general_screen.dart';

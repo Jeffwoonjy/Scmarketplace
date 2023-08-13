@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:scmarketplace/provider/product_provider.dart';
+import 'package:scmarketplace/Page/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 

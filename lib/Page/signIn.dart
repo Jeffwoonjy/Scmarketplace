@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scmarketplace/Page/allChat.dart';
+import 'package:scmarketplace/Page/buyer/main_screen.dart';
 import 'package:scmarketplace/Page/profile.dart';
 import 'package:scmarketplace/Page/search.dart';
 import 'package:scmarketplace/Page/signUp.dart';
@@ -89,7 +90,7 @@ class _SignInState extends State<SignIn> {
                 email: _emailTextController.text, 
                 password: _passwordTextController.text).then((value){
                   Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const AllChat()));               
+                  MaterialPageRoute(builder: (context) => const MainScreen()));               
                 }).onError((error, stackTrace) {
                   print("Error ${error.toString()}");
                 });

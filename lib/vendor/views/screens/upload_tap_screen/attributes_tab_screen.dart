@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scmarketplace/provider/product_provider.dart';
+import 'package:scmarketplace/Page/provider/product_provider.dart';
 
 class AttributesTabScreen extends StatefulWidget {
   

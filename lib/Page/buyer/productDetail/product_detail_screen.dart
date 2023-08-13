@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:scmarketplace/provider/cart_provider.dart';
+import 'package:scmarketplace/Page/provider/cart_provider.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final dynamic productData;

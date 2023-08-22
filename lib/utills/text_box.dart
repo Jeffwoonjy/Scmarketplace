@@ -10,7 +10,7 @@ class MyTextBox extends StatelessWidget {
     super.key,
     required this.text,
     required this.sectionName,
-    required this.onPresed,
+    this.onPresed,
   });
 
   @override

@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:scmarketplace/vendor/views/screens/vendor_inner_screen/withdrawal_screen.dart';
 
+import '../../../utills/colour.dart';
+
 class EarningsScreen extends StatelessWidget {
   const EarningsScreen({super.key});
 
@@ -29,7 +31,7 @@ class EarningsScreen extends StatelessWidget {
           Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: Colors.pink,
+              backgroundColor: hexStringToColor("FFC0CB"),
               elevation: 2,
               title: Row(
                 children: [
@@ -75,7 +77,7 @@ class EarningsScreen extends StatelessWidget {
                       height: 150,
                       width: MediaQuery.of(context).size.width * 0.5,
                       decoration: BoxDecoration(
-                        color: Colors.pink,
+                        color: hexStringToColor("FFC0CB"),
                         borderRadius: BorderRadius.circular(32),
                       ),
               
@@ -109,7 +111,7 @@ class EarningsScreen extends StatelessWidget {
                       height: 150,
                       width: MediaQuery.of(context).size.width * 0.5,
                       decoration: BoxDecoration(
-                        color: Colors.pink,
+                        color: hexStringToColor("FFC0CB"),
                         borderRadius: BorderRadius.circular(32),
                       ),
               
@@ -150,7 +152,7 @@ class EarningsScreen extends StatelessWidget {
                         height: 40,
                         width: MediaQuery.of(context).size.width - 40,
                         decoration: BoxDecoration(
-                          color: Colors.pink, 
+                          color: hexStringToColor("FFC0CB"), 
                           borderRadius: BorderRadius.circular(10),
                           ),
                     
@@ -173,7 +175,7 @@ class EarningsScreen extends StatelessWidget {
         }
 
         return Center(
-          child: CircularProgressIndicator(color: Colors.pink),
+          child: CircularProgressIndicator(color: hexStringToColor("FFC0CB")),
         );
       },
     );

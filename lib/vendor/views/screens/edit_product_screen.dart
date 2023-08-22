@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:scmarketplace/vendor/views/screens/edit_products_tabs/published_tab.dart';
 import 'package:scmarketplace/vendor/views/screens/edit_products_tabs/unpublished_tab.dart';
 
+import '../../../utills/colour.dart';
+
 class EditProductScreen extends StatelessWidget {
   const EditProductScreen({super.key});
 
@@ -11,7 +13,7 @@ class EditProductScreen extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.pink,
+        backgroundColor: hexStringToColor("FFC0CB"),
         title: Text('Manage Products', style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold, 

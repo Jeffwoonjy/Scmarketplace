@@ -1,35 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:scmarketplace/Page/viewProfile.dart';
+import 'package:scmarketplace/Page/viewVendor.dart';
 
 class ChatRoom extends StatelessWidget {
   final String chatRoomId;
+  final String currentUserId;
+  final String receiverID;
+  final bool isVendor;
+  final String? vendorBusinessName;
+  final String? chatTitle;
   final Map<String, dynamic>? userMap;
 
   ChatRoom({
     required this.chatRoomId,
-    required this.userMap,
-    Key? key,
+    this.userMap,
+    required this.currentUserId,
+    required this.receiverID,
+    this.vendorBusinessName,
+    required this.isVendor,
+    this.chatTitle,
+    Key? key, required String userID,
   }) : super(key: key);
 
   final TextEditingController _message = TextEditingController();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final ScrollController _scrollController = ScrollController();
 
   void onSendMessage() async {
     if (_message.text.isNotEmpty) {
-      Map<String, dynamic> messages = {
-        "sendby": _auth.currentUser!.displayName!,
+      print("receiverID: $receiverID");
+      print("userID: $currentUserId");
+      Map<String, dynamic> message = {
+        "sendby": currentUserId,
         "message": _message.text,
         "time": FieldValue.serverTimestamp(),
+        "receiverID": receiverID,
+        "userID": currentUserId,
       };
+
+      Map<String, dynamic> chatRoomData = {
+        "receiverID": receiverID,
+        "userID": currentUserId,
+      };
+
       _message.clear();
       await _firestore
           .collection('chatroom')
           .doc(chatRoomId)
           .collection('chats')
-          .add(messages);
+          .add(message);
+
+      await _firestore
+          .collection('chatroom')
+          .doc(chatRoomId)
+          .set(chatRoomData, SetOptions(merge: true));
+
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 300),
@@ -46,7 +73,7 @@ class ChatRoom extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(userMap?['username'] ?? 'Chat'),
+        title: Text(chatTitle ?? 'Chat'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -63,7 +90,6 @@ class ChatRoom extends StatelessWidget {
                     .snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData) {
-                    print("Fetched Messages: ${snapshot.data!.docs}");
                     return ListView.builder(
                       shrinkWrap: true,
                       controller: _scrollController,
@@ -72,7 +98,7 @@ class ChatRoom extends StatelessWidget {
                         final message = snapshot.data!.docs[index]['message'];
                         final sendBy = snapshot.data!.docs[index]['sendby'];
 
-                        final isSentByCurrentUser = sendBy == _auth.currentUser!.displayName;
+                        final isSentByCurrentUser = sendBy == currentUserId;
 
                         return ListTile(
                           title: Align(
@@ -132,4 +158,3 @@ class ChatRoom extends StatelessWidget {
     );
   }
 }
-

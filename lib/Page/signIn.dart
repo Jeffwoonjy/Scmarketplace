@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:scmarketplace/Page/allChat.dart';
 import 'package:scmarketplace/Page/buyer/main_screen.dart';
+import 'package:scmarketplace/Page/chat.dart';
 import 'package:scmarketplace/Page/profile.dart';
 import 'package:scmarketplace/Page/search.dart';
 import 'package:scmarketplace/Page/signUp.dart';

@@ -8,6 +8,10 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:scmarketplace/vendor/views/auth/vendor_auth_screen.dart';
+import 'package:scmarketplace/vendor/views/auth/vendor_registration_screen.dart';
+import 'package:scmarketplace/vendor/views/screens/main_vendor_screen.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -23,6 +27,9 @@ class _ProfileState extends State<Profile> {
   bool _isDisposed = false;
   bool isProcessing = false;
   File? _profilePicture;
+  List<Review> userReviews = [];
+  TextEditingController _reviewController = TextEditingController();
+  double selectedRating = 0.0;
 
   @override
   void dispose() {
@@ -30,7 +37,6 @@ class _ProfileState extends State<Profile> {
     super.dispose();
   }
 
-  //edit field
   Future<void> editField(String field) async {
     String newValue = "";
     await showDialog(
@@ -53,7 +59,6 @@ class _ProfileState extends State<Profile> {
           },
         ),
         actions: [
-          //cancel button
           TextButton(
             child: Text(
               "Cancel",
@@ -61,8 +66,6 @@ class _ProfileState extends State<Profile> {
             ),
             onPressed: () => Navigator.pop(context),
           ),
-
-          //save button
           TextButton(
             child: Text(
               "Save",
@@ -73,7 +76,7 @@ class _ProfileState extends State<Profile> {
         ],
       ),
     );
-    //update firestore
+
     if (newValue.trim().length > 0) {
       await usersCollection.doc(currentUser.uid).update({field: newValue});
     }
@@ -85,7 +88,6 @@ class _ProfileState extends State<Profile> {
     fetchProfilePicture();
   }
 
-  // Download profile image
   Future<File?> downloadImage(String imageUrl) async {
     try {
       final response = await http.get(Uri.parse(imageUrl));
@@ -104,7 +106,6 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  // Function to fetch the profile picture URL from Firestore
   Future<File?> fetchProfilePicture() async {
     final snapshot = await usersCollection.doc(currentUser.uid).get();
     final userData = snapshot.data() as Map<String, dynamic>?;
@@ -116,7 +117,6 @@ class _ProfileState extends State<Profile> {
     return null;
   }
 
-  // profile image
   Future<void> pickImage() async {
     if (isProcessing) return;
     isProcessing = true;
@@ -125,20 +125,17 @@ class _ProfileState extends State<Profile> {
     final XFile? image = await _imagepicker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
-      // Upload image to Firebase Storage
       final storageRef = firebase_storage.FirebaseStorage.instance
           .ref()
           .child('profile_images')
-          .child(currentUser.uid! + 'logo1.jpg'); // You can change the file name as per your preference
+          .child(currentUser.uid! + 'logo1.jpg');
 
       final taskSnapshot = await storageRef.putFile(File(image.path));
       final downloadUrl = await taskSnapshot.ref.getDownloadURL();
 
-      // Update the profile picture URL in Firestore
       await usersCollection.doc(currentUser.uid).update({'profilePicture': downloadUrl});
 
       if (!_isDisposed) {
-        // Update the profile picture URL in Firestore only if the widget is still mounted
         await usersCollection.doc(currentUser.uid).update({'profilePicture': downloadUrl});
         setState(() {
           _profilePicture = File(image.path);
@@ -156,15 +153,41 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         title: const Text("Profile Page"),
         backgroundColor: hexStringToColor("FFC0CB"),
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 16.0),
+            child: TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const VendorRegistrationScreen()),
+                );
+              },
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+              ),
+              child: const Text(
+                "Seller Page",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance.collection("Users").doc(currentUser.uid).snapshots(),
         builder: (context, snapshots) {
           if (snapshots.connectionState == ConnectionState.waiting) {
-            // Show a loading indicator while waiting for data
             return const CircularProgressIndicator();
           } else if (snapshots.hasError) {
-            // Show an error message if there's an error
             return Center(
               child: Text("Error ${snapshots.error}"),
             );
@@ -184,34 +207,26 @@ class _ProfileState extends State<Profile> {
               }
             }
             if (userData != null && userData is Map<String, dynamic>) {
-              // Fetch profile from Firestore
               final profilePictureUrl = userData['profilePicture'];
               return ListView(
                 children: [
                   const SizedBox(height: 50),
-                  // Profile picture
                   GestureDetector(
                     onTap: pickImage,
                     child: CircleAvatar(
                       radius: 80,
-                      backgroundColor: Colors.white, // Add a white background to CircleAvatar
-                      backgroundImage: _profilePicture != null
-                          ? FileImage(_profilePicture!) // Display the profile picture if available
-                          : null, // Set to null when there's no profile picture
-                      child: _profilePicture == null
-                          ? const Icon(Icons.camera_alt, color: Colors.grey) // Show an icon to indicate the user can tap to pick an image
-                          : null,
+                      backgroundColor: Colors.white,
+                      backgroundImage: _profilePicture != null ? FileImage(_profilePicture!) : null,
+                      child: _profilePicture == null ? const Icon(Icons.camera_alt, color: Colors.grey) : null,
                     ),
                   ),
                   const SizedBox(height: 10),
-                  //user email
                   Text(
                     currentUser.uid!,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: hexStringToColor("95A5A6")),
                   ),
                   const SizedBox(height: 50),
-                  //user details
                   Padding(
                     padding: const EdgeInsets.only(left: 25.0),
                     child: Text(
@@ -219,19 +234,16 @@ class _ProfileState extends State<Profile> {
                       style: TextStyle(color: hexStringToColor("F1C40F")),
                     ),
                   ),
-                  //username
                   MyTextBox(
                     text: userData['username'],
                     sectionName: 'username',
                     onPresed: () => editField('username'),
                   ),
-                  //email
                   MyTextBox(
                     text: userData['email'],
                     sectionName: 'email',
                     onPresed: () => editField('email'),
                   ),
-                  //address
                   MyTextBox(
                     text: userData['address'],
                     sectionName: 'address',
@@ -239,12 +251,110 @@ class _ProfileState extends State<Profile> {
                   ),
                   const SizedBox(height: 10),
                   const SizedBox(height: 10),
-                  //user post
                   Padding(
                     padding: const EdgeInsets.only(left: 25.0),
                     child: Text(
                       "My Post",
                       style: TextStyle(color: hexStringToColor("F1C40F")),
+                    ),
+                  ),
+
+                  // Review section
+                  const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Reviews",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        RatingBar.builder(
+                          initialRating: selectedRating,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemCount: 5,
+                          itemSize: 30.0,
+                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating) {
+                            setState(() {
+                              selectedRating = rating;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                decoration: const InputDecoration(
+                                  hintText: 'Write your review...',
+                                ),
+                                controller: _reviewController,
+                              ),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                final review = _reviewController.text.trim();
+                                if (review.isNotEmpty) {
+                                  final reviewerId = FirebaseAuth.instance.currentUser?.uid ?? '';
+                                  final ratingValue = selectedRating.toInt();
+
+                                  addReview(currentUser.uid, reviewerId, review, ratingValue);
+                                  setState(() {
+                                    _reviewController.clear();
+                                    selectedRating = 0;
+                                  });
+                                }
+                              },
+                              child: Text('Post Review'),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection("Reviews")
+                              .where('userId', isEqualTo: currentUser.uid)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              final reviewDocs = snapshot.data!.docs;
+                              return Column(
+                                children: reviewDocs.map((reviewDoc) {
+                                  final reviewerUsername = reviewDoc['reviewerUsername'];
+                                  final rating = reviewDoc['rating'];
+                                  final comment = reviewDoc['comment'];
+                                  final timestamp = reviewDoc['timestamp'].toDate();
+
+                                  return ListTile(
+                                    title: Text("Rating: $rating"),
+                                    subtitle: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text("Comment: $comment"),
+                                        Text("By: $reviewerUsername"),
+                                        Text("Date: $timestamp"),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              );
+                            }
+                            return const Text("No reviews available.");
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -258,10 +368,40 @@ class _ProfileState extends State<Profile> {
             return const Center(
               child: Text("No data available"),
             );
-            
           }
         },
       ),
     );
   }
+
+  Future<void> addReview(String userId, String reviewerId, String comment, int rating) async {
+    final reviewsCollection = FirebaseFirestore.instance.collection("Reviews");
+    final DateTime currentTime = DateTime.now();
+
+    final reviewerDoc = await FirebaseFirestore.instance.collection("Users").doc(reviewerId).get();
+    final String reviewerUsername = reviewerDoc['username'] as String;
+
+    await reviewsCollection.add({
+      'userId': userId,
+      'reviewerId': reviewerId,
+      'reviewerUsername': reviewerUsername,
+      'rating': rating,
+      'comment': comment,
+      'timestamp': currentTime,
+    });
+  }
+}
+
+class Review {
+  final int rating;
+  final String comment;
+  final String reviewerUsername;
+  final DateTime timestamp;
+
+  Review({
+    required this.rating,
+    required this.comment,
+    required this.reviewerUsername,
+    required this.timestamp,
+  });
 }

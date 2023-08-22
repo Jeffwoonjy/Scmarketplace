@@ -5,20 +5,19 @@ import 'package:scmarketplace/utills/colour.dart';
 import 'package:scmarketplace/Page/chat.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import '../utills/text_box.dart';
+class VendorPage extends StatefulWidget {
+  final String vendorId;
+  final Map<String, dynamic>? vendorMap;
 
-class ViewPage extends StatefulWidget {
-  final String userId;
-  final Map<String, dynamic>? userMap;
-
-  const ViewPage({Key? key, required this.userId, required this.userMap}) : super(key: key);
+  const VendorPage({Key? key, required this.vendorId, required this.vendorMap})
+      : super(key: key);
 
   @override
-  State<ViewPage> createState() => _ViewPageState();
+  State<VendorPage> createState() => _VendorPageState();
 }
 
-class _ViewPageState extends State<ViewPage> {
-  double selectedRating = 0;
+class _VendorPageState extends State<VendorPage> {
+double selectedRating = 0;
   String chatRoomId(String user1, String user2) {
     final List<String> sortedUserNames = [user1, user2]..sort();
     if (sortedUserNames[0] == sortedUserNames[1]) {
@@ -29,18 +28,14 @@ class _ViewPageState extends State<ViewPage> {
 
   final TextEditingController _reviewController = TextEditingController();
 
-  Future<void> addReview(String userId, String reviewerId, String comment, int rating) async {
+  Future<void> addReview(String vendorId, String reviewerId, String comment, int rating) async {
     final reviewsCollection = FirebaseFirestore.instance.collection("Reviews");
 
     final DateTime currentTime = DateTime.now();
 
-    final reviewerDoc = await FirebaseFirestore.instance.collection("Users").doc(reviewerId).get();
-    final String reviewerUsername = reviewerDoc['username'] as String;
-
     await reviewsCollection.add({
-      'userId': userId,
+      'vendorId': vendorId,
       'reviewerId': reviewerId,
-      'reviewerUsername': reviewerUsername,
       'rating': rating,
       'comment': comment,
       'timestamp': currentTime,
@@ -51,11 +46,11 @@ class _ViewPageState extends State<ViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("User Profile"),
+        title: const Text("Vendor Profile"),
         backgroundColor: hexStringToColor("FFC0CB"),
       ),
       body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance.collection("Users").doc(widget.userId).snapshots(),
+        stream: FirebaseFirestore.instance.collection("vendors").doc(widget.vendorId).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -74,13 +69,13 @@ class _ViewPageState extends State<ViewPage> {
                   CircleAvatar(
                     radius: 80,
                     backgroundColor: Colors.white,
-                    backgroundImage: userData['profilePicture'] != null
-                        ? NetworkImage(userData['profilePicture'])
+                    backgroundImage: userData['storeImage'] != null
+                        ? NetworkImage(userData['storeImage'])
                         : null,
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    widget.userId,
+                    widget.vendorId,
                     textAlign: TextAlign.center,
                     style: TextStyle(color: hexStringToColor("95A5A6")),
                   ),
@@ -88,28 +83,29 @@ class _ViewPageState extends State<ViewPage> {
                   Padding(
                     padding: const EdgeInsets.only(left: 25.0),
                     child: Text(
-                      "User details",
+                      "Vendor details",
                       style: TextStyle(color: hexStringToColor("F1C40F")),
                     ),
                   ),
                   ElevatedButton(
                     onPressed: () {
                       final String currentUserId = FirebaseAuth.instance.currentUser?.uid ?? '';
-                      final String receiverId= widget.userId;
+                      final String receiverID= widget.vendorId;
 
-                      if (currentUserId.isNotEmpty && receiverId.isNotEmpty) {
-                        final String roomId = chatRoomId(currentUserId, receiverId);
+                      if (currentUserId.isNotEmpty && receiverID.isNotEmpty) {
+                        final String roomId = chatRoomId(currentUserId, receiverID);
 
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => ChatRoom(
                               chatRoomId: roomId,
-                              userMap: widget.userMap,
+                              userMap: widget.vendorMap,
                               currentUserId: currentUserId, 
-                              receiverID: receiverId,
+                              receiverID: receiverID,
                               userID: currentUserId,
-                              isVendor: false,
+                              vendorBusinessName: widget.vendorMap?['businessName'],
+                              isVendor: true,
                             ),
                           ),
                         );
@@ -119,21 +115,7 @@ class _ViewPageState extends State<ViewPage> {
                     },
                     child: const Text("Chat"),
                   ),
-                  MyTextBox(
-                    text: userData['username'],
-                    sectionName: 'username',
-                  ),
-                  //email
-                  MyTextBox(
-                    text: userData['email'],
-                    sectionName: 'email',
-                  ),
-                  //address
-                  MyTextBox(
-                    text: userData['address'],
-                    sectionName: 'address',
-                  ),
-                  // Review section
+                  // Username, Email, Address details here
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.all(20.0),
@@ -155,7 +137,7 @@ class _ViewPageState extends State<ViewPage> {
                           allowHalfRating: true,
                           itemCount: 5,
                           itemSize: 30.0,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                          itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                           itemBuilder: (context, _) => const Icon(
                             Icons.star,
                             color: Colors.amber,
@@ -184,14 +166,14 @@ class _ViewPageState extends State<ViewPage> {
                                   final reviewerId = FirebaseAuth.instance.currentUser?.uid ?? '';
                                   final ratingValue = selectedRating.toInt();
 
-                                  addReview(widget.userId, reviewerId, review, ratingValue);
+                                  addReview(widget.vendorId, reviewerId, review, ratingValue);
                                   setState(() {
                                     _reviewController.clear();
                                     selectedRating = 0;
                                   });
                                 }
                               },
-                              child: Text('Post Review'),
+                              child: const Text('Post Review'),
                             ),
                           ],
                         ),
@@ -199,14 +181,14 @@ class _ViewPageState extends State<ViewPage> {
                         StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance
                               .collection("Reviews")
-                              .where('userId', isEqualTo: widget.userId)
+                              .where('vendorId', isEqualTo: widget.vendorId)
                               .snapshots(),
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
                               final reviewDocs = snapshot.data!.docs;
                               return Column(
                                 children: reviewDocs.map((reviewDoc) {
-                                  final reviewerUsername = reviewDoc['reviewerUsername'];
+                                  final reviewerId = reviewDoc['reviewerId'];
                                   final rating = reviewDoc['rating'];
                                   final comment = reviewDoc['comment'];
                                   final timestamp = reviewDoc['timestamp'].toDate();
@@ -217,7 +199,7 @@ class _ViewPageState extends State<ViewPage> {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text("Comment: $comment"),
-                                        Text("By: $reviewerUsername"),
+                                        Text("By: $reviewerId"),
                                         Text("Date: $timestamp"),
                                       ],
                                     ),
@@ -231,6 +213,7 @@ class _ViewPageState extends State<ViewPage> {
                       ],
                     ),
                   ),
+                  // User posts section here
                 ],
               );
             } else {
@@ -260,15 +243,15 @@ class _InfoCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       child: Card(
-        color: hexStringToColor("000000"),
+        color: hexStringToColor("000000"), // Replace with appropriate color
         child: ListTile(
           title: Text(
             title,
-            style: TextStyle(color: hexStringToColor("F1C40F")),
+            style: TextStyle(color: hexStringToColor("F1C40F")), // Replace with appropriate color
           ),
           subtitle: Text(
             content,
-            style: TextStyle(color: hexStringToColor("ffffff")),
+            style: TextStyle(color: hexStringToColor("ffffff")), // Replace with appropriate color
           ),
         ),
       ),

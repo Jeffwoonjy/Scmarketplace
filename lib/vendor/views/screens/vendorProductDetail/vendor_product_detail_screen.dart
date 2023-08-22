@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../../../../utills/colour.dart';
+
 class VendorProductDetailScreen extends StatefulWidget {
   final dynamic productData;
 
@@ -56,7 +58,7 @@ class _VendorProductDetailScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: hexStringToColor("FFC0CB"),
         elevation: 0,
         title: Text(
           widget.productData['productName'],
@@ -134,7 +136,7 @@ class _VendorProductDetailScreenState
             height: 40,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              color: Colors.pink,
+              color: hexStringToColor("FFC0CB"),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(

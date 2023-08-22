@@ -48,7 +48,7 @@ StreamBuilder<QuerySnapshot>(
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ActionChip(
-                    backgroundColor: Colors.yellow.shade900,
+                    backgroundColor: Colors.pink,
                     onPressed: (){
                       setState(() {
                         _selectedCategory = categoryData['categoryName'];

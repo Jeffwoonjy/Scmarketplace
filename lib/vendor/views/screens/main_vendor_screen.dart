@@ -37,7 +37,7 @@ class _MainVendorScreenState extends State<MainVendorScreen> {
         }),
         type: BottomNavigationBarType.fixed,
         unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.yellow.shade900,
+        selectedItemColor: const Color.fromARGB(255, 3, 3, 2),
         items: [
         BottomNavigationBarItem(icon: Icon(CupertinoIcons.money_dollar), label: 'EARNINGS'),
         BottomNavigationBarItem(icon: Icon(Icons.upload), label: 'UPLOAD'),

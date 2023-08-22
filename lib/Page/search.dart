@@ -1,6 +1,7 @@
   import 'package:flutter/material.dart';
   import 'package:cloud_firestore/cloud_firestore.dart';
   import 'package:scmarketplace/Page/chat.dart';
+  import 'package:scmarketplace/Page/viewVendor.dart';
   import 'package:scmarketplace/utills/colour.dart';
   import 'package:firebase_auth/firebase_auth.dart';
   import 'package:scmarketplace/Page/viewProfile.dart';
@@ -14,6 +15,7 @@
 
   class _SearchUser extends State<SearchUser> {
     Map<String, dynamic>? userMap;
+    Map<String, dynamic>? vendorMap;
     bool isLoading = false;
     final TextEditingController _search = TextEditingController();
 
@@ -39,38 +41,48 @@
         setState(() {
           isLoading = false;
           userMap = null;
+          vendorMap = null;
         });
         return;
       }
 
-      await firestore
+        // Search in 'Users' collection
+      QuerySnapshot usersQuery = await firestore
           .collection('Users')
           .where("username", isEqualTo: _search.text)
-          .get()
-          .then((value) {
-        setState(() {
-        if (value.docs.isNotEmpty) {
-          userMap = value.docs[0].data();
-          final String currentUserName = FirebaseAuth.instance.currentUser?.displayName ?? '';
-          
-          if (currentUserName == userMap?['username']) {
-            userMap = null;
-          }
-        } else {
+          .get();
+
+      // Search in 'Vendors' collection
+      QuerySnapshot vendorsQuery = await firestore
+          .collection('vendors')
+          .where("businessName", isEqualTo: _search.text)
+          .get();
+
+      print("Users Query Results: ${usersQuery.docs.length} documents");
+      print("Vendors Query Results: ${vendorsQuery.docs.length} documents");
+
+      setState(() {
+      if (usersQuery.docs.isNotEmpty) {
+        userMap = usersQuery.docs[0].data() as Map<String, dynamic>?;
+        final String currentUserName =
+            FirebaseAuth.instance.currentUser?.displayName ?? '';
+
+        if (currentUserName == userMap?['username']) {
           userMap = null;
         }
-        isLoading = false;
-        });
-        print("User Map: $userMap");
-        print("Firestore Data: ${value.docs[0].data()}");
-      }).catchError((error) {
-      print("Error fetching data: $error");
-      setState(() {
-        isLoading = false;
+      } else {
         userMap = null;
-      });
+      }
+
+      if (vendorsQuery.docs.isNotEmpty) {
+        vendorMap = vendorsQuery.docs[0].data() as Map<String, dynamic>?;
+      } else {
+        vendorMap = null;
+      }
+
+      isLoading = false;
     });
-    }
+  }
 
     @override
     Widget build(BuildContext context) {
@@ -165,7 +177,53 @@
                                     color: hexStringToColor("000000"),
                                   ),
                                 )
-                              : Container(),
+                                : Container(),  
+                          if (vendorMap != null)
+                          ListTile(
+                            onTap: () {
+                              if (vendorMap != null &&
+                                  FirebaseAuth.instance.currentUser != null) {
+                                final String selectedVendorId =
+                                    vendorMap!['vendorId'] ?? '';
+
+                                print("Current User ID: '${FirebaseAuth.instance.currentUser!.uid}'");
+                                print("Selected Vendor ID: '$selectedVendorId'");
+
+                                if (selectedVendorId.isNotEmpty) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => VendorPage(
+                                        vendorId: selectedVendorId,
+                                        vendorMap: vendorMap,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  print("Invalid vendor ID");
+                                }
+                              } else {
+                                print(
+                                    "vendorMap or FirebaseAuth.currentUser is null");
+                              }
+                            },
+                            leading: Icon(
+                              Icons.store,
+                              color: hexStringToColor("000000"),
+                            ),
+                            title: Text(
+                              vendorMap!['businessName'],
+                              style: TextStyle(
+                                color: hexStringToColor("000000"),
+                                fontSize: 18,
+                              ),
+                            ),
+                            subtitle: Text(vendorMap!['email']),
+                            trailing: Icon(
+                              Icons.chat,
+                              color: hexStringToColor("000000"),
+                            ),
+                          ),
                         ],
                       );
                     } else {

@@ -4,6 +4,8 @@ import 'package:photo_view/photo_view.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:scmarketplace/Page/provider/cart_provider.dart';
+import 'package:scmarketplace/Page/viewVendor.dart';
+
 
 class ProductDetailScreen extends StatefulWidget {
   final dynamic productData;
@@ -124,6 +126,30 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     widget.productData['description'],
+                  style: TextStyle(
+                    fontSize: 17,color: Colors.grey,
+                    letterSpacing: 2 
+                    ),
+                    textAlign: TextAlign.center,
+                    ),
+                ),
+              ],
+              ),
+
+              ExpansionTile(title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Vendor Profiel', style: TextStyle(color: Colors.pink),),
+                  Text('View More', style: TextStyle(color: Colors.pink),
+                  ),
+                ],
+              ),
+              
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Vendor Profiel',
                   style: TextStyle(
                     fontSize: 17,color: Colors.grey,
                     letterSpacing: 2 

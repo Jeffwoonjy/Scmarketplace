@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scmarketplace/Page/buyer/inner_screens/checkout_screen.dart';
+import 'package:scmarketplace/Page/buyer/inner_screens/order_screen.dart';
+import 'package:scmarketplace/Page/buyer/main_screen.dart';
 
 
 import '../../provider/cart_provider.dart';
@@ -14,7 +16,8 @@ class CartScreen extends StatelessWidget {
     final CartProvider _cartProvider = Provider.of<CartProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color.fromARGB(255, 250, 98, 149),
         elevation: 0,
         title: Text(
           'Cart',
@@ -23,8 +26,10 @@ class CartScreen extends StatelessWidget {
 
         actions: [
           IconButton(onPressed: (){
-            _cartProvider.removeAllItem();
-          }, icon: Icon(CupertinoIcons.delete, color: Colors.white,))
+            Navigator.push(context, MaterialPageRoute(builder: (context){
+              return CustomerOrderScreen();
+            }));
+          }, icon: Icon(Icons.receipt, color: Colors.white,))
         ],
       ),
       body: _cartProvider.getCartItem.isNotEmpty ? ListView.builder(
@@ -48,7 +53,7 @@ class CartScreen extends StatelessWidget {
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       letterSpacing: 4,
-                      color: Colors.pink,
+                      color: Color.fromARGB(255, 250, 98, 149),
                     ),
                   ),
                   OutlinedButton(
@@ -60,7 +65,7 @@ class CartScreen extends StatelessWidget {
                       Container(
                         height: 34,
                         width: 115,
-                        decoration: BoxDecoration(color: Colors.pink),
+                        decoration: BoxDecoration(color: const Color.fromARGB(255, 250, 98, 149),),
                         child: Row(
                           children: [
                             IconButton(
@@ -116,19 +121,26 @@ class CartScreen extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width -40,
-              decoration: BoxDecoration(
-                color: Colors.pink,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Center(
-                child: Text(
-                  'Continue Shopping',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
+            GestureDetector(
+              onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return MainScreen();
+                      },),);
+              },
+              child: Container(
+                height: 40,
+                width: MediaQuery.of(context).size.width -40,
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 250, 98, 149),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    'Continue Shopping',
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
@@ -148,7 +160,7 @@ class CartScreen extends StatelessWidget {
             height: 50,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: _cartProvider.totalPrice == 0.00? Colors.grey:  Colors.pink,
+              color: _cartProvider.totalPrice == 0.00? Colors.grey:  const Color.fromARGB(255, 250, 98, 149),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(

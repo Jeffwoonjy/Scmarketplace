@@ -18,8 +18,8 @@ class WithdrawalScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
-        elevation: 0,
+        backgroundColor: Color.fromARGB(255, 250, 98, 149),
+        elevation: 3,
         title: Text('Withdraw', style: TextStyle(
           color: Colors.white, 
           letterSpacing: 4, 

@@ -17,7 +17,7 @@ class AllProductScreen extends StatelessWidget {
     .snapshots();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Color.fromARGB(255, 250, 98, 149),
         title: Text(categoryData['categoryName'],style: TextStyle(
           letterSpacing: 6, 
           fontWeight: FontWeight.bold, 

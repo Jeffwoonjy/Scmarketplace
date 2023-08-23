@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
+import 'package:scmarketplace/Page/buyer/inner_screens/order_screen.dart';
 import 'package:scmarketplace/Page/buyer/main_screen.dart';
 import 'package:scmarketplace/Page/provider/cart_provider.dart';
 import 'package:uuid/uuid.dart';
@@ -40,7 +41,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.pink,
+        backgroundColor: Color.fromARGB(255, 250, 98, 149),
         title: Text('Checkout',style: TextStyle(fontSize: 18,letterSpacing: 6, fontWeight: FontWeight.bold),),
       ),
 
@@ -68,7 +69,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 4,
-                        color: Colors.pink,
+                        color: Color.fromARGB(255, 250, 98, 149),
                       ),
                     ),
                     OutlinedButton(
@@ -118,7 +119,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 EasyLoading.dismiss();
 
                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                  return MainScreen();
+                  return CustomerOrderScreen();
                 }));
               });
             });
@@ -138,7 +139,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         }
 
         return Center (
-          child: CircularProgressIndicator(color: Colors.pink,),
+          child: CircularProgressIndicator(color: Color.fromARGB(255, 250, 98, 149),),
         );
       },
     );

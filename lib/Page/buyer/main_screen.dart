@@ -27,7 +27,7 @@ class _MainScreenState extends State<MainScreen> {
     CategoryScreen(),
     StoreScreen(),
     CartScreen(),
-    SearchScreen(),
+    // SearchScreen(),
     AllChatScreen(),
     Profile(),
   ];
@@ -42,13 +42,13 @@ class _MainScreenState extends State<MainScreen> {
           });
         },
         unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.yellow.shade900,
+        selectedItemColor: Color.fromARGB(255, 250, 98, 149),
         items: [
         BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), label: 'HOME',),
         BottomNavigationBarItem(icon: Icon(CupertinoIcons.doc_text_search), label: 'CATEGORIES',),
         BottomNavigationBarItem(icon: Icon(Icons.store), label: 'STORE',),
         BottomNavigationBarItem(icon: Icon(CupertinoIcons.shopping_cart), label: 'CART',),
-        BottomNavigationBarItem(icon: Icon(CupertinoIcons.search), label: 'SEARCH',),
+        // BottomNavigationBarItem(icon: Icon(CupertinoIcons.search), label: 'SEARCH',),
         BottomNavigationBarItem(icon: Icon(CupertinoIcons.chat_bubble), label: 'CHAT',),
         BottomNavigationBarItem(icon: Icon(CupertinoIcons.profile_circled), label: 'ACCOUNT',),
       ]),

@@ -34,8 +34,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final CartProvider _cartProvider = Provider.of<CartProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.pink,
+        elevation: 3,
+        backgroundColor: const Color.fromARGB(255, 250, 98, 149),
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           widget.productData['productName'], 
@@ -101,7 +101,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 fontSize: 22,
                 letterSpacing: 8,
                 fontWeight: FontWeight.bold,
-                color: Colors.pink),
+                color: const Color.fromARGB(255, 250, 98, 149),),
                 ),
              ),
       
@@ -115,8 +115,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ExpansionTile(title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Product Description', style: TextStyle(color: Colors.pink),),
-                  Text('View More', style: TextStyle(color: Colors.pink),
+                  Text('Product Description', style: TextStyle(color: Color.fromARGB(255, 250, 98, 149),),),
+                  Text('View More', style: TextStyle(color: Color.fromARGB(255, 250, 98, 149),),
                   ),
                 ],
               ),
@@ -136,30 +136,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               ],
               ),
 
-              ExpansionTile(title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Vendor Profiel', style: TextStyle(color: Colors.pink),),
-                  Text('View More', style: TextStyle(color: Colors.pink),
-                  ),
-                ],
-              ),
-              
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Vendor Profiel',
-                  style: TextStyle(
-                    fontSize: 17,color: Colors.grey,
-                    letterSpacing: 2 
-                    ),
-                    textAlign: TextAlign.center,
-                    ),
-                ),
-              ],
-              ),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -167,7 +143,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   children: [
                     Text("This product will be ship on", 
                     style: TextStyle(
-                      color: Colors.pink,
+                      color: const Color.fromARGB(255, 250, 98, 149),
                       fontWeight: FontWeight.bold,
                       fontSize: 18
                       ),
@@ -243,7 +219,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             decoration: BoxDecoration(
               color: _cartProvider.getCartItem.containsKey(widget.productData['productId'])
               ?Colors.grey 
-              :Colors.pink,
+              :const Color.fromARGB(255, 250, 98, 149),
               borderRadius: BorderRadius.circular(10),
             ),
         

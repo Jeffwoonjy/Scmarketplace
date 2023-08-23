@@ -13,7 +13,6 @@ class HomeScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         WelcomeText(),
-
         SizedBox(height: 14,),
         // SearchInputWidget(),
         BannerWidget(),

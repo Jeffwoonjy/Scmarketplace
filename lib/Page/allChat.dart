@@ -147,6 +147,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("All Chats"),
         backgroundColor: hexStringToColor("FFC0CB"),
         actions: [

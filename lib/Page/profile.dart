@@ -160,7 +160,7 @@ class _ProfileState extends State<Profile> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const VendorRegistrationScreen()),
+                  MaterialPageRoute(builder: (context) => const VendorAuthScreen()),
                 );
               },
               style: ButtonStyle(

@@ -31,7 +31,7 @@ class EarningsScreen extends StatelessWidget {
           Map<String, dynamic> data = snapshot.data!.data() as Map<String, dynamic>;
           return Scaffold(
             appBar: AppBar(
-              backgroundColor: hexStringToColor("FFC0CB"),
+              backgroundColor: Color.fromARGB(255, 250, 98, 149),
               elevation: 2,
               title: Row(
                 children: [
@@ -42,7 +42,7 @@ class EarningsScreen extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text('Hi ' + data['businessName'],style: TextStyle(
-                        fontSize: 22,
+                        fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                         letterSpacing: 6,
@@ -77,7 +77,7 @@ class EarningsScreen extends StatelessWidget {
                       height: 150,
                       width: MediaQuery.of(context).size.width * 0.5,
                       decoration: BoxDecoration(
-                        color: hexStringToColor("FFC0CB"),
+                        color: Color.fromARGB(255, 250, 98, 149),
                         borderRadius: BorderRadius.circular(32),
                       ),
               
@@ -111,7 +111,7 @@ class EarningsScreen extends StatelessWidget {
                       height: 150,
                       width: MediaQuery.of(context).size.width * 0.5,
                       decoration: BoxDecoration(
-                        color: hexStringToColor("FFC0CB"),
+                        color:Color.fromARGB(255, 250, 98, 149),
                         borderRadius: BorderRadius.circular(32),
                       ),
               
@@ -152,7 +152,7 @@ class EarningsScreen extends StatelessWidget {
                         height: 40,
                         width: MediaQuery.of(context).size.width - 40,
                         decoration: BoxDecoration(
-                          color: hexStringToColor("FFC0CB"), 
+                          color: Color.fromARGB(255, 250, 98, 149),
                           borderRadius: BorderRadius.circular(10),
                           ),
                     

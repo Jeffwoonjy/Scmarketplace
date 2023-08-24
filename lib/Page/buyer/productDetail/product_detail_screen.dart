@@ -48,8 +48,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.pink,
+        elevation: 3,
+        backgroundColor: const Color.fromARGB(255, 250, 98, 149),
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
           productData['productName'], // Access data from the Map
@@ -123,11 +123,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               style: TextStyle(
                 fontSize: 22,
                 letterSpacing: 8,
+
                 fontWeight: FontWeight.bold,),
             ),
 
             ExpansionTile(title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
               children: [
                 Text('Product Description', style: TextStyle(color: Colors.pink),),
                 Text('View More', style: TextStyle(color: Colors.pink),
@@ -178,7 +180,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 children: [
                   Text("This product will be ship on",
                     style: TextStyle(
-                      color: Colors.pink,
+                      color: const Color.fromARGB(255, 250, 98, 149),
                       fontWeight: FontWeight.bold,
                       fontSize: 18
                     ),
@@ -252,9 +254,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             height: 50,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
-              color: _cartProvider.getCartItem.containsKey(productData['productId'])
-                  ?Colors.grey
-                  :Colors.pink,
+              color: _cartProvider.getCartItem.containsKey(widget.productData['productId'])
+              ?Colors.grey 
+              :const Color.fromARGB(255, 250, 98, 149),
               borderRadius: BorderRadius.circular(10),
             ),
 

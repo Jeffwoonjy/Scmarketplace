@@ -13,8 +13,8 @@ class EditProductScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         centerTitle: true,
-        elevation: 0,
-        backgroundColor: hexStringToColor("FFC0CB"),
+        elevation: 3,
+        backgroundColor: Color.fromARGB(255, 250, 98, 149),
         title: Text('Manage Products', style: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold, 

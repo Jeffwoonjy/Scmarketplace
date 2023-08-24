@@ -15,7 +15,7 @@ class StoreDetailScreen extends StatelessWidget {
     .snapshots();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: Color.fromARGB(255, 250, 98, 149),
         title: Text(
           storeData['businessName'],style: TextStyle(color: Colors.white),),
           ),

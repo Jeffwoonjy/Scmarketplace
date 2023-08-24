@@ -70,7 +70,7 @@ class UnPublishedTab extends StatelessWidget {
                           'RM' + '' + vendorProductData['productPrice'].toStringAsFixed(2),style: TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
-                          color: Colors.pink),
+                          color: Color.fromARGB(255, 250, 98, 149),),
                           ),
                       ],
                     )

@@ -25,7 +25,7 @@ class HomeproductWidget extends StatelessWidget {
         }
 
         return Container(
-          height: 270,
+          height: 390,
           child: ListView.separated(
             scrollDirection: Axis.vertical,
             itemBuilder: (context, index){

@@ -15,7 +15,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final Stream<QuerySnapshot> _productsStream = FirebaseFirestore.instance.collection('products').snapshots();
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
+        backgroundColor: const Color.fromARGB(255, 250, 98, 149),
         elevation: 0,
         title: TextFormField(
           onChanged: (value){

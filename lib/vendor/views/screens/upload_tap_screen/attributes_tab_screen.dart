@@ -58,7 +58,7 @@ class _AttributesTabScreenState extends State<AttributesTabScreen> with Automati
               ),
 
               _entered == true? ElevatedButton(
-                style: ElevatedButton.styleFrom(primary: Colors.pink,),
+                style: ElevatedButton.styleFrom(primary: Color.fromARGB(255, 250, 98, 149),),
                 onPressed: (){
                   setState(() {
                     _sizeList.add(_sizeController.text);

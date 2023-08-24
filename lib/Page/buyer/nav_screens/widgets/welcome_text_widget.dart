@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:scmarketplace/Page/buyer/nav_screens/search_screen.dart';
 
 class WelcomeText extends StatelessWidget {
   const WelcomeText({
@@ -20,6 +21,17 @@ class WelcomeText extends StatelessWidget {
           ),
           ),
     
+        Container(
+        child: IconButton(
+        icon: Icon(Icons.search),
+          onPressed: () { 
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return SearchScreen();
+      }));
+    }
+  )
+)
+
           
       ],
       ),

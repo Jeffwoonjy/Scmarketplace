@@ -1,16 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:scmarketplace/Page/provider/cart_provider.dart';
-import 'package:scmarketplace/Page/viewVendor.dart';
 
+import '../../viewVendor.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  final dynamic productData;
+  final DocumentSnapshot productData;
 
-  const ProductDetailScreen({super.key, required this.productData});
+  const ProductDetailScreen({Key? key, required this.productData})
+      : super(key: key);
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -29,21 +31,33 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       SnackBar(content: Text(message)),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     final CartProvider _cartProvider = Provider.of<CartProvider>(context);
+
+    // Access the data from the DocumentSnapshot
+    final Map<String, dynamic>? productData = widget.productData.data() as Map<String, dynamic>?;
+
+    if (productData == null) {
+      // Handle the case where data is null or invalid
+      return Center(
+        child: Text('Invalid data'),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         elevation: 3,
         backgroundColor: const Color.fromARGB(255, 250, 98, 149),
         iconTheme: IconThemeData(color: Colors.white),
         title: Text(
-          widget.productData['productName'], 
+          productData['productName'], // Access data from the Map
           style: TextStyle(
-          color: Colors.white,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 5,
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 5,
           ),
         ),
       ),
@@ -56,9 +70,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 Container(
                   height: 300,
                   width: double.infinity,
-                  child: PhotoView(imageProvider: NetworkImage(widget.productData['imageUrl'][_imageIndex])),
+                  child: PhotoView(imageProvider: NetworkImage(productData['imageUrl'][_imageIndex])),
                 ),
-      
+
                 Positioned(
                   bottom: 0,
                   child: Container(
@@ -66,128 +80,151 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     width: MediaQuery.of(context).size.width,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: widget.productData['imageUrl'].length,
+                      itemCount: productData['imageUrl'].length,
                       itemBuilder: (context, index){
-                      return InkWell(
-                        onTap: (){
-                          setState(() {
-                            _imageIndex = index;
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.yellow.shade900)
+                        return InkWell(
+                          onTap: (){
+                            setState(() {
+                              _imageIndex = index;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Colors.yellow.shade900)
+                              ),
+                              height: 60,
+                              width: 60,
+                              child: Image.network(
+                                  productData['imageUrl'][index]),
                             ),
-                            height: 60,
-                            width: 60,
-                            child: Image.network(
-                              widget.productData['imageUrl'][index]),
                           ),
-                        ),
-                      );
-                    }),
-                ),),
+                        );
+                      }),
+                  ),),
               ],
             ),
-      
+
             SizedBox(height: 20,),
-             Padding(
-               padding: const EdgeInsets.all(13.0),
-               child: Text('RM' + '' + widget.productData['productPrice'].toStringAsFixed(2),
+            Padding(
+              padding: const EdgeInsets.all(13.0),
+              child: Text('RM' + '' + productData['productPrice'].toStringAsFixed(2),
                 style: TextStyle(
+                  fontSize: 22,
+                  letterSpacing: 8,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.pink),
+              ),
+            ),
+
+            Text(productData['productName'],
+              style: TextStyle(
                 fontSize: 22,
                 letterSpacing: 8,
-                fontWeight: FontWeight.bold,
-                color: const Color.fromARGB(255, 250, 98, 149),),
+
+                fontWeight: FontWeight.bold,),
+            ),
+
+            ExpansionTile(title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+              children: [
+                Text('Product Description', style: TextStyle(color: Colors.pink),),
+                Text('View More', style: TextStyle(color: Colors.pink),
                 ),
-             ),
-      
-              Text(widget.productData['productName'],
-              style: TextStyle(
-              fontSize: 22,
-              letterSpacing: 8,
-              fontWeight: FontWeight.bold,),
-              ),
-      
-              ExpansionTile(title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Product Description', style: TextStyle(color: Color.fromARGB(255, 250, 98, 149),),),
-                  Text('View More', style: TextStyle(color: Color.fromARGB(255, 250, 98, 149),),
-                  ),
-                ],
-              ),
-              
+              ],
+            ),
+
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    widget.productData['description'],
-                  style: TextStyle(
-                    fontSize: 17,color: Colors.grey,
-                    letterSpacing: 2 
+                    productData['description'],
+                    style: TextStyle(
+                        fontSize: 17,color: Colors.grey,
+                        letterSpacing: 2
                     ),
                     textAlign: TextAlign.center,
-                    ),
+                  ),
                 ),
               ],
-              ),
+            ),
 
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text("This product will be ship on", 
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VendorPage(
+                      vendorId: productData['vendorId'],
+                      vendorMap: null,
+                    ),
+                  ),
+                );
+              },
+              child: const Text(
+                'Vendor Profile',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text("This product will be ship on",
                     style: TextStyle(
                       color: const Color.fromARGB(255, 250, 98, 149),
                       fontWeight: FontWeight.bold,
                       fontSize: 18
-                      ),
-                      ),
-                      Text(formatedDate(widget.productData['scheduleDate'].toDate(),),
-                      style: TextStyle(
-                        color: Colors.blue, 
-                        fontSize: 18, 
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 2,
-                        ),
-                      ),
-                  ],
-                ),
+                    ),
+                  ),
+                  Text(formatedDate(productData['scheduleDate'].toDate(),),
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+                    ),
+                  ),
+                ],
               ),
+            ),
 
-              ExpansionTile(title: Text('Available Size',),
+            ExpansionTile(title: Text('Available Size',),
               children: [
                 Container(
                   height: 50,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    itemCount: widget.productData['sizeList'].length,
+                    itemCount: productData['sizeList'].length,
                     itemBuilder: ((context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          color:_selectedSize == widget.productData['sizeList'][index]? Colors.yellow:null,
+                          color:_selectedSize == productData['sizeList'][index]? Colors.yellow:null,
                           child: OutlinedButton(
                             onPressed: (){
                               setState(() {
-                                _selectedSize = widget.productData['sizeList'][index];
+                                _selectedSize = productData['sizeList'][index];
                               });
-                        
+
                               print(_selectedSize);
-                            }, 
+                            },
                             child: Text(
-                              widget.productData['sizeList'][index]), ),
+                                productData['sizeList'][index]), ),
                         ),
                       );
-                  }),),
+                    }),),
                 )
               ],
-              ),
+            ),
           ],
         ),
       ),
@@ -195,22 +232,22 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       bottomSheet: Padding(
         padding: const EdgeInsets.all(8.0),
         child: InkWell(
-          onTap: _cartProvider.getCartItem.containsKey(widget.productData['productId'])? null:(){
+          onTap: _cartProvider.getCartItem.containsKey(productData['productId'])? null:(){
             if(_selectedSize==null){
               return showSnack(context, 'Please Select A Size');
             }else{
               _cartProvider.addProductToCart(
-              widget.productData['productName'], 
-              widget.productData['productId'], 
-              widget.productData['imageUrl'], 
-              1,
-              widget.productData['quantity'],
-              widget.productData['productPrice'], 
-              widget.productData['vendorId'], 
-              _selectedSize!, 
-              widget.productData['scheduleDate']);
+                  productData['productName'],
+                  productData['productId'],
+                  productData['imageUrl'],
+                  1,
+                  productData['quantity'],
+                  productData['productPrice'],
+                  productData['vendorId'],
+                  _selectedSize!,
+                  productData['scheduleDate']);
 
-              return showSnack(context, 'You Have Added ${widget.productData['productName']} To Your Cart');
+              return showSnack(context, 'You Have Added ${productData['productName']} To Your Cart');
             }
           },
           child: Container(
@@ -222,36 +259,36 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               :const Color.fromARGB(255, 250, 98, 149),
               borderRadius: BorderRadius.circular(10),
             ),
-        
+
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Icon(
-                    CupertinoIcons.cart,
-                    color: Colors.white, size: 18,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: _cartProvider.getCartItem.containsKey(widget.productData['productId'])? Text('In Cart', 
-                  style: TextStyle(
-                    color: Colors.white, 
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    letterSpacing: 5,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Icon(
+                      CupertinoIcons.cart,
+                      color: Colors.white, size: 18,
                     ),
-                    ):Text('Add To Cart', 
-                  style: TextStyle(
-                    color: Colors.white, 
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    letterSpacing: 5,
-                    ),),
-                ),
-            ]),
-            ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: _cartProvider.getCartItem.containsKey(productData['productId'])? Text('In Cart',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        letterSpacing: 5,
+                      ),
+                    ):Text('Add To Cart',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        letterSpacing: 5,
+                      ),),
+                  ),
+                ]),
+          ),
         ),
       ),
     );

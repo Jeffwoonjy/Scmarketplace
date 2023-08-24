@@ -1,9 +1,12 @@
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scmarketplace/utills/colour.dart';
 import 'package:scmarketplace/Page/chat.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+import '../utills/text_box.dart';
 
 class VendorPage extends StatefulWidget {
   final String vendorId;
@@ -46,8 +49,16 @@ double selectedRating = 0;
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Vendor Profile"),
-        backgroundColor: hexStringToColor("FFC0CB"),
+        title: Text(
+          widget.vendorMap?['businessName'] ?? 'Vendor Profile',
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 5,
+          ),
+        ),
+        backgroundColor: const Color.fromARGB(255, 250, 98, 149),
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance.collection("vendors").doc(widget.vendorId).snapshots(),
@@ -72,12 +83,6 @@ double selectedRating = 0;
                     backgroundImage: userData['storeImage'] != null
                         ? NetworkImage(userData['storeImage'])
                         : null,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    widget.vendorId,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: hexStringToColor("95A5A6")),
                   ),
                   const SizedBox(height: 50),
                   Padding(
@@ -115,7 +120,15 @@ double selectedRating = 0;
                     },
                     child: const Text("Chat"),
                   ),
-                  // Username, Email, Address details here
+                  MyTextBox(
+                    text: userData['businessName'],
+                    sectionName: 'BusinessName',
+                  ),
+                  //email
+                  MyTextBox(
+                    text: userData['email'],
+                    sectionName: 'email',
+                  ),
                   const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.all(20.0),

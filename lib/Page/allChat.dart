@@ -149,7 +149,7 @@ class _AllChatScreenState extends State<AllChatScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text("All Chats"),
-        backgroundColor: hexStringToColor("FFC0CB"),
+        backgroundColor: const Color.fromARGB(255, 250, 98, 149),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
@@ -173,11 +173,13 @@ class _AllChatScreenState extends State<AllChatScreen> {
                 final receiverId = chatRooms[index]['receiverID'] as String;
                 final userID = chatRooms[index]['userID'] as String;
                 final username = chatUsernames[chatRoomId] ?? 'Unknown User';
+                
                 return ListTile(
                   onTap: () {
                     navigateToChatRoom(chatRoomId, receiverId, userID, username);
                   },
-                  title: Text(" $username"),
+                  title: Text(" $username",style: const TextStyle(fontSize: 20,),),
+                  contentPadding: const EdgeInsets.all(16.0),
                 );
               },
             ),

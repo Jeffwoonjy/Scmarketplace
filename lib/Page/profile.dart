@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:scmarketplace/Page/signIn.dart';
 import 'package:scmarketplace/utills/colour.dart';
 import 'package:scmarketplace/utills/text_box.dart';
 import 'package:image_picker/image_picker.dart';
@@ -151,8 +152,9 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Profile Page"),
-        backgroundColor: hexStringToColor("FFC0CB"),
+        backgroundColor: Color.fromARGB(255, 250, 98, 149),
         actions: [
           Container(
             margin: const EdgeInsets.only(right: 16.0),
@@ -220,12 +222,6 @@ class _ProfileState extends State<Profile> {
                       child: _profilePicture == null ? const Icon(Icons.camera_alt, color: Colors.grey) : null,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    currentUser.uid!,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: hexStringToColor("95A5A6")),
-                  ),
                   const SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.only(left: 25.0),
@@ -250,7 +246,6 @@ class _ProfileState extends State<Profile> {
                     onPresed: () => editField('address'),
                   ),
                   const SizedBox(height: 10),
-                  const SizedBox(height: 10),
                   Padding(
                     padding: const EdgeInsets.only(left: 25.0),
                     child: Text(
@@ -272,54 +267,6 @@ class _ProfileState extends State<Profile> {
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
-                        ),
-                        const SizedBox(height: 10),
-                        RatingBar.builder(
-                          initialRating: selectedRating,
-                          minRating: 1,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemSize: 30.0,
-                          itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (context, _) => const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          onRatingUpdate: (rating) {
-                            setState(() {
-                              selectedRating = rating;
-                            });
-                          },
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextField(
-                                decoration: const InputDecoration(
-                                  hintText: 'Write your review...',
-                                ),
-                                controller: _reviewController,
-                              ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                final review = _reviewController.text.trim();
-                                if (review.isNotEmpty) {
-                                  final reviewerId = FirebaseAuth.instance.currentUser?.uid ?? '';
-                                  final ratingValue = selectedRating.toInt();
-
-                                  addReview(currentUser.uid, reviewerId, review, ratingValue);
-                                  setState(() {
-                                    _reviewController.clear();
-                                    selectedRating = 0;
-                                  });
-                                }
-                              },
-                              child: Text('Post Review'),
-                            ),
-                          ],
                         ),
                         const SizedBox(height: 20),
                         StreamBuilder<QuerySnapshot>(
@@ -355,6 +302,28 @@ class _ProfileState extends State<Profile> {
                           },
                         ),
                       ],
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        await FirebaseAuth.instance.signOut();
+                        Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => const SignIn()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.pink, // Set the button background color to pink
+                      ),
+                      child: const Text(
+                        "Log Out",
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 247, 244, 245),
+                          fontSize: 18,
+                        ),
+                      ),
                     ),
                   ),
                 ],

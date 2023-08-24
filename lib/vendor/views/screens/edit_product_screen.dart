@@ -11,6 +11,7 @@ class EditProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultTabController(length: 2, child: Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         centerTitle: true,
         elevation: 3,
         backgroundColor: Color.fromARGB(255, 250, 98, 149),

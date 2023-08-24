@@ -50,8 +50,16 @@ class _ViewPageState extends State<ViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("User Profile"),
+      appBar:AppBar(
+        title: Text(
+          widget.userMap?['username'] ?? 'User Profile',
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 5,
+          ),
+        ),
         backgroundColor: hexStringToColor("FFC0CB"),
       ),
       body: StreamBuilder<DocumentSnapshot>(
@@ -77,12 +85,6 @@ class _ViewPageState extends State<ViewPage> {
                     backgroundImage: userData['profilePicture'] != null
                         ? NetworkImage(userData['profilePicture'])
                         : null,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    widget.userId,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: hexStringToColor("95A5A6")),
                   ),
                   const SizedBox(height: 50),
                   Padding(

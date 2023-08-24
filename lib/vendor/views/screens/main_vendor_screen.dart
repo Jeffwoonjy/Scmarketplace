@@ -22,7 +22,7 @@ class _MainVendorScreenState extends State<MainVendorScreen> {
     UploadScreen(),
     EditProductScreen(),
     VendorOrderScreen(),
-    VendorLogoutScreen(),
+    // VendorLogoutScreen(),
   ];
 
   @override
@@ -43,7 +43,7 @@ class _MainVendorScreenState extends State<MainVendorScreen> {
         BottomNavigationBarItem(icon: Icon(Icons.upload), label: 'UPLOAD'),
         BottomNavigationBarItem(icon: Icon(Icons.edit), label: 'EDIT'),
         BottomNavigationBarItem(icon: Icon(CupertinoIcons.shopping_cart), label: 'ORDERS'),
-        BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'LOGOUT'),
+        // BottomNavigationBarItem(icon: Icon(Icons.logout), label: 'LOGOUT'),
       ],),
 
       body: _pages[_pageIndex],

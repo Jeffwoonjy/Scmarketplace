@@ -90,7 +90,7 @@
       return Scaffold(
         appBar: AppBar(
           title: const Text("Search Page"),
-          backgroundColor: hexStringToColor("FFC0CB"),
+          backgroundColor: const Color.fromARGB(255, 250, 98, 149),
         ),
         body: isLoading
             ? Center(

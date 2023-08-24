@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:scmarketplace/Page/buyer/main_screen.dart';
+import 'package:scmarketplace/Page/buyer/nav_screens/home_screen.dart';
 import 'package:scmarketplace/Page/profile.dart';
 import 'package:scmarketplace/Page/signIn.dart';
 import 'package:scmarketplace/utills/colour.dart';
@@ -146,10 +148,10 @@ class _SignUpState extends State<SignUp> {
       body: Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(colors: [
-            hexStringToColor("FFC0CB"),
-            hexStringToColor("FFC0CB")
+            Color.fromARGB(255, 250, 98, 149),
+            Color.fromARGB(255, 250, 98, 149),
         ])),
 
       child: SingleChildScrollView(child: Padding(padding: const EdgeInsets.fromLTRB(20, 120, 20, 0),
@@ -203,7 +205,7 @@ class _SignUpState extends State<SignUp> {
                 await userCredential.user!.updateDisplayName(displayName);
 
                 Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const Profile(),
+                      builder: (context) => const MainScreen(),
                     ));
                   } catch (error) {
                     print("Error: ${error.toString()}");

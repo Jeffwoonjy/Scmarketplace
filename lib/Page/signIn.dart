@@ -58,11 +58,11 @@ class _SignInState extends State<SignIn> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           //background colour
           gradient: LinearGradient(colors: [
-            hexStringToColor("FFC0CB"),
-            hexStringToColor("FFC0CB")
+            Color.fromARGB(255, 250, 98, 149),
+            Color.fromARGB(255, 250, 98, 149),
       ])),
       //background
       child: SingleChildScrollView(
@@ -117,7 +117,7 @@ Container _signInButton(
     //ButtonStyle
     style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states){
         if (states.contains(MaterialState.pressed)) {
-          return Colors.black;  
+          return Colors.grey;  
         }
         return Colors.white;
     }),

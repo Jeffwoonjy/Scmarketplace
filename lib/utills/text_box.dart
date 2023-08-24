@@ -17,7 +17,7 @@ class MyTextBox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: hexStringToColor("FFC0CB"),
+        color: const Color.fromARGB(255, 250, 98, 149),
         borderRadius: BorderRadius.circular(0),
         ),
       padding: const EdgeInsets.only(left: 15, bottom: 15),
@@ -31,12 +31,11 @@ class MyTextBox extends StatelessWidget {
               //section name
               Text(
                 sectionName,
-                style: TextStyle(color: hexStringToColor("E74C3C")),
-              ),
+                style: TextStyle(color: Color.fromARGB(255, 252, 252, 251),)),
               //edit button
               IconButton(onPressed: onPresed,
                 icon: Icon(
-                  Icons.settings,
+                  Icons.edit,
                   color: hexStringToColor("000000"),
                 ),
               ),
